@@ -1,17 +1,18 @@
 {
   "name": "shdl-bcknd",
-   "type": "module",
+  "type": "module",
   "version": "0.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
     "start": "node src/server",
-    "dev" : "nodemon src/server"
+    "dev": "nodemon src/server"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "date-fns": "^2.29.3",
     "express": "^4.18.1",
     "uuid": "^9.0.0"
   },
