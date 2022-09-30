@@ -1,6 +1,6 @@
 import express from 'express';
 import router from './routes/root.js';
-import { logger } from './middlevare/logger.js';
+import { logger } from './middleware/logger.js';
 
 const app = express();
 const PORT = process.env.PORT || 9001;
