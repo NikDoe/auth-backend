@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { userRepo } from '../utils/utils.js';
 
 export const handleLogin = async (req, res) => {
@@ -15,7 +16,18 @@ export const handleLogin = async (req, res) => {
 	const match = await bcrypt.compare(password, foundUser.password);
 
 	if (match) {
-		res.json({ success: `Пользователь ${user} вошёл в систему` });
+		const accessToken = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, {
+			expiresIn: '1m',
+		});
+		const refreshToken = jwt.sign({ user }, process.env.REFRESH_TOKEN_SECRET, {
+			expiresIn: '30d',
+		});
+
+		res.cookie('jwt', refreshToken, {
+			httpOnly: true,
+			maxAge: 24 * 60 * 60 * 1000,
+		});
+		res.json({ accessToken });
 	} else {
 		res.status(401).json({ message: 'пароль неверен' });
 	}
