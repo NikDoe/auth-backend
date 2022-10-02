@@ -6,12 +6,16 @@ export const handleLogin = async (req, res) => {
 	const { user, password } = req.body;
 
 	if (!user && !password)
-		return res.status(400).json({ message: 'username и пароль обязательны' });
+		return res
+			.status(400)
+			.json({ controller: 'login', message: 'username и пароль обязательны' });
 
 	const foundUser = await userRepo.findOne({ where: { user } });
 
 	if (!foundUser)
-		return res.status(401).json({ message: `пользователя с именем ${user} не существует` });
+		return res
+			.status(401)
+			.json({ controller: 'login', message: `пользователя с именем ${user} не существует` });
 
 	const match = await bcrypt.compare(password, foundUser.password);
 
@@ -31,6 +35,6 @@ export const handleLogin = async (req, res) => {
 		});
 		res.json({ accessToken });
 	} else {
-		res.status(401).json({ message: 'пароль неверен' });
+		res.status(401).json({ controller: 'login', message: 'пароль неверен' });
 	}
 };
