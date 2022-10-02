@@ -15,5 +15,9 @@ export default new EntitySchema({
 		password: {
 			type: 'text',
 		},
+		refreshToken: {
+			type: 'text',
+			nullable: true,
+		},
 	},
 });

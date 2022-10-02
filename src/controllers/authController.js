@@ -23,6 +23,8 @@ export const handleLogin = async (req, res) => {
 			expiresIn: '30d',
 		});
 
+		await userRepo.save({ ...foundUser, refreshToken });
+
 		res.cookie('jwt', refreshToken, {
 			httpOnly: true,
 			maxAge: 24 * 60 * 60 * 1000,
