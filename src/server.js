@@ -35,3 +35,5 @@ const start = async () => {
 };
 
 start().catch(console.error);
+
+console.log('test');
