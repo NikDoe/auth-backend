@@ -6,7 +6,7 @@ export const handleRefreshToken = async (req, res) => {
 	if (!cookies?.jwt)
 		return res.status(401).json({ controller: 'refresh', messasge: 'cookies пусты' });
 	const refreshToken = cookies.jwt;
-	const foundUser = await User.findOne({ refreshToken });
+	const foundUser = await User.findOne({ refreshToken }).exec();
 	if (!foundUser)
 		return res.status(403).json({ controller: 'refresh', messasge: 'пользователь не найден' });
 	jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {

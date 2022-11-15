@@ -8,7 +8,7 @@ export const handleLogin = async (req, res) => {
 		return res
 			.status(400)
 			.json({ controller: 'login', message: 'username и пароль обязательны' });
-	const foundUser = await User.findOne({ user });
+	const foundUser = await User.findOne({ user }).exec();
 	if (!foundUser)
 		return res
 			.status(401)
@@ -21,7 +21,9 @@ export const handleLogin = async (req, res) => {
 		const refreshToken = jwt.sign({ user }, process.env.REFRESH_TOKEN_SECRET, {
 			expiresIn: '30d',
 		});
-		await User.updateOne({ ...foundUser, refreshToken });
+		foundUser.refreshToken = refreshToken;
+		const result = await foundUser.save();
+
 		res.cookie('jwt', refreshToken, {
 			httpOnly: true,
 			sameSite: 'None',

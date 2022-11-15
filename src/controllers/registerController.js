@@ -3,7 +3,7 @@ import User from '../models/User.js';
 
 export const handleNewUser = async (req, res) => {
 	const { user, password } = req.body;
-	const candidate = await User.findOne({ user });
+	const candidate = await User.findOne({ user }).exec();
 	if (candidate)
 		return res
 			.status(409)
