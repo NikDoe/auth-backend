@@ -1,23 +1,23 @@
-import { EntitySchema } from 'typeorm';
+import mongoose from 'mongoose';
 
-export default new EntitySchema({
-	name: 'User',
-	tableName: 'Users',
-	columns: {
-		id: {
-			primary: true,
-			type: 'int',
-			generated: true,
-		},
-		user: {
-			type: 'text',
-		},
-		password: {
-			type: 'text',
-		},
-		refreshToken: {
-			type: 'text',
-			nullable: true,
-		},
+const UserSchema = new mongoose.Schema({
+	user: {
+		type: String,
+		required: true,
 	},
+	password: {
+		type: String,
+		required: true,
+	},
+	roles: {
+		User: {
+			type: Number,
+			default: 2001,
+		},
+		Editor: Number,
+		Admin: Number,
+	},
+	refreshToken: String,
 });
+
+export default mongoose.model('User', UserSchema);
