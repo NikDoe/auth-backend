@@ -6,7 +6,10 @@ import cookieParser from 'cookie-parser';
 import { logger } from './middleware/logger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { corsOptions } from './config/corsOptions.js';
-import { AppDataSource } from './config/dbConnection.js';
+import mongoose from 'mongoose';
+import { connectDB } from './config/dbConnection.js';
+
+connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 9001;
@@ -24,16 +27,7 @@ app.all('*', (req, res) => {
 
 app.use(errorHandler);
 
-const start = async () => {
-	await AppDataSource.initialize()
-		.then(() => {
-			console.log('база данных подключена');
-		})
-		.catch(error => console.error(error.message));
-
+mongoose.connection.once('open', () => {
+	console.log('Connected to DB');
 	app.listen(PORT, () => console.log(`сервер запущен на порту ${PORT}`));
-};
-
-start().catch(console.error);
-
-console.log('test');
+});
