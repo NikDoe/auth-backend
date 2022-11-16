@@ -15,6 +15,7 @@ export const handleLogin = async (req, res) => {
 			.json({ controller: 'login', message: `пользователя с именем ${user} не существует` });
 	const match = await bcrypt.compare(password, foundUser.password);
 	if (match) {
+		const roles = Object.values(foundUser.roles).filter(Boolean);
 		const accessToken = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, {
 			expiresIn: '1m',
 		});
@@ -30,7 +31,7 @@ export const handleLogin = async (req, res) => {
 			secure: true,
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		res.json({ result });
+		res.json({ roles, accessToken });
 	} else {
 		res.status(401).json({ controller: 'login', message: 'пароль неверен' });
 	}
