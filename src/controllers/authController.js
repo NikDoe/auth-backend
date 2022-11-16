@@ -30,7 +30,7 @@ export const handleLogin = async (req, res) => {
 			secure: true,
 			maxAge: 24 * 60 * 60 * 1000,
 		});
-		res.json({ accessToken });
+		res.json({ result });
 	} else {
 		res.status(401).json({ controller: 'login', message: 'пароль неверен' });
 	}
