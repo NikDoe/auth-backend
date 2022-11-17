@@ -16,7 +16,7 @@ export const handleLogin = async (req, res) => {
 	const match = await bcrypt.compare(password, foundUser.password);
 	if (match) {
 		const roles = Object.values(foundUser.roles).filter(Boolean);
-		const accessToken = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, {
+		const accessToken = jwt.sign({ user, roles }, process.env.ACCESS_TOKEN_SECRET, {
 			expiresIn: '1m',
 		});
 		const refreshToken = jwt.sign({ user }, process.env.REFRESH_TOKEN_SECRET, {
