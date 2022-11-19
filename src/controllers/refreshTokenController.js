@@ -14,9 +14,14 @@ export const handleRefreshToken = async (req, res) => {
 			return res
 				.status(403)
 				.json({ controller: 'refresh', messasge: 'токен не верифицирован' });
-		const accessToken = jwt.sign({ user: decoded.user }, process.env.ACCESS_TOKEN_SECRET, {
-			expiresIn: '1m',
-		});
+		const roles = Object.values(foundUser.roles).filter(Boolean);
+		const accessToken = jwt.sign(
+			{ user: decoded.user, roles },
+			process.env.ACCESS_TOKEN_SECRET,
+			{
+				expiresIn: '1m',
+			},
+		);
 		res.json({ accessToken });
 	});
 };
