@@ -22,6 +22,6 @@ export const handleRefreshToken = async (req, res) => {
 				expiresIn: '1m',
 			},
 		);
-		res.json({ roles, accessToken });
+		res.json({ accessToken });
 	});
 };
